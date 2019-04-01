@@ -5,6 +5,10 @@ const getUser = username =>
     .where('username', username)
     .first()
 
+const getUsers = () =>
+  db('users')
+    .select('username')
+
 const insertUser = user =>
   db('users')
     .insert(user);
@@ -18,6 +22,7 @@ const returnUser = id =>
 
 module.exports = {
   getUser,
+  getUsers,
   insertUser,
   returnUser
 

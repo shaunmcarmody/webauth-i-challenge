@@ -8,7 +8,7 @@ router.post('/register', async (req, res, next) => {
   try {
     const result = await db.insertUser(req.body);
     const { username } = await db.returnUser(result[0]);
-    res.status(200).json({ message: `Welcome ${username}! You've registered successfully` })
+    res.status(201).json({ message: `Welcome ${username}! You've registered successfully` })
   } catch (err) {
     res.status(500).json(err);
   }
@@ -30,9 +30,17 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.get('/users', (req, res, next) => {
+router.get('/users', async (req, res, next) => {
   // Return users if logged in
   // 'You shall not pass!' if not logged in
+  const { auth } = req.headers;
+  if (auth !== 'true') return res.status(401).json({ message: 'You shall not pass!' });
+  try {
+    const resource = await db.getUsers();
+    res.status(200).json(resource);
+  } catch (err) {
+    res.status(500).json(err);    
+  }
 });
 
 
