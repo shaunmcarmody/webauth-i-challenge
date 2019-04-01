@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-
 const users = require('./controllers/users/users.routes.js');
 
 const server = express();

@@ -2,6 +2,15 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const db = require('./users.model');
 
+const restricted = (req, res, next) => {
+  const { auth } = req.headers;
+  if (auth === 'true') {
+    next();
+  } else {
+    res.status(401).json({ message: 'You shall not pass!' });
+  }
+}
+
 router.post('/register', async (req, res, next) => {
   // Username and Password required
   req.body.password = bcrypt.hashSync(req.body.password, 4);
@@ -30,11 +39,7 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.get('/users', async (req, res, next) => {
-  // Return users if logged in
-  // 'You shall not pass!' if not logged in
-  const { auth } = req.headers;
-  if (auth !== 'true') return res.status(401).json({ message: 'You shall not pass!' });
+router.get('/users', restricted, async (req, res, next) => {
   try {
     const resource = await db.getUsers();
     res.status(200).json(resource);
@@ -42,7 +47,5 @@ router.get('/users', async (req, res, next) => {
     res.status(500).json(err);    
   }
 });
-
-
 
 module.exports = router
