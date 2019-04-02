@@ -13,17 +13,8 @@ const insertUser = user =>
   db('users')
     .insert(user);
 
-const returnUser = id =>
-  db('users')
-    .where('id', id)
-    .select('username')
-    .first()
-
-
 module.exports = {
   getUser,
   getUsers,
-  insertUser,
-  returnUser
-
+  insertUser
 }
