@@ -33,7 +33,7 @@ server.use(helmet());
 server.use(express.json());
 server.use(cors());
 server.use(session(sessionConfig));
-server.use('/api/auth/', auth);
+server.use('/api/auth', auth);
 server.use('/api/restricted', restricted);
 
 server.listen(5000, console.log('Listening on Port 5000'));
